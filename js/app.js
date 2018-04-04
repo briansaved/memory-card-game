@@ -1,17 +1,4 @@
-/*
- * Create a list that holds all of your cards
- */
-
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
 // Shuffle function from http://stackoverflow.com/a/2450976
-
 
 const deck = document.querySelector('.deck'); //the deck parent
 let card = document.getElementsByClassName('card'); //the Cards
@@ -25,6 +12,7 @@ let match = 0;
 let movesCount = 0;
 let firstClick = false;
 let cardPair = [];
+
 
 function shuffle(array) {
     var currentIndex = array.length,
@@ -63,9 +51,10 @@ let play = _ => {
 play();
 
 let clicksListener = e => {
-    // deck.addEventListener('click', function clicks(e) {
     if (e.target.classList.contains('card') && !e.target.classList.contains('show', 'open')) {
         e.target.classList.add('show', 'open');
+        movesCount++;
+        moves.innerHTML = movesCount;
         let currentCard = e.target;
         let icons = currentCard.firstElementChild.classList[1];
         openedCards.push(icons);
@@ -73,6 +62,7 @@ let clicksListener = e => {
 
         if (openedCards.length === 2) {
             deck.removeEventListener('click', clicksListener);
+
             if (openedCards[0] === openedCards[1]) {
                 match++;
                 console.log('it\'s a match');
@@ -84,12 +74,13 @@ let clicksListener = e => {
                 cardPair = [];
 
                 if (cardCount === match) {
-                    alert(`Game Complete
+                    setTimeout(_ => {
+                        alert(`Game Complete
                Click 'ok' to Play again`);
-                    match = 0;
-                    openedCards = [];
-                    cardPair = [];
-                    play();
+                        openedCards = [];
+                        cardPair = [];
+                        play();
+                    }, 500);
                 }
             } else {
                 setTimeout(_ => {
@@ -98,22 +89,21 @@ let clicksListener = e => {
                     });
                     openedCards = [];
                     cardPair = [];
-                }, 1000);
+                }, 500);
             }
             setTimeout(_ => {
                 deck.addEventListener('click', clicksListener);
-            }, 1000);
-
+            }, 600);
         }
-
     } else {
         undefined;
     }
-
-
 }
 
 deck.addEventListener('click', clicksListener);
+document.querySelector('.restart').addEventListener('click', _ => {
+    play();
+});
 /*
     * set up the event listener
     for a card.If a card is clicked:
