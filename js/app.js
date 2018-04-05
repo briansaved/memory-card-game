@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', _ => {
     let openedCards = [];
     let match = 0;
     let movesCount = 0;
-    let firstClick = false;
     let cardPair = [];
 
 
@@ -67,15 +66,15 @@ document.addEventListener('DOMContentLoaded', _ => {
     //During the Game and what happens on Clicks
 
     let clicksListener = e => { //  prevented bug where Open Cards were being clicked and flipping(VVV /*open show*/)
-        if (e.target.classList.contains('card') && !e.target.classList.contains('match' /*'show', 'open'*/ ) &&
-            !e.target.classList.contains('show', 'open')) {
+        if (e.target.classList.contains('card') && !e.target.classList.contains('match') &&
+            !e.target.classList.contains('show', 'open')) { //prevent double clicking or changing open & matched card
             e.target.classList.add('show', 'open'); //If card not open, add class to reveal it
             movesCount++; //Count each move/click, wrong or right.
             moves.innerHTML = movesCount;
             score(movesCount); //Call the score function to listen for rating
             let currentCard = e.target; //The card is what is clicked
             let icons = currentCard.firstElementChild.classList[1]; //The icon is inside card
-            openedCards.push(icons); //Temporary Array fro storing 2 icons to compare
+            openedCards.push(icons); //Temporary Array for storing 2 icons to compare
             cardPair.push(currentCard); //Temporary Array for storing 2 cards to compare
 
             if (openedCards.length === 2) { //Condition of comparison to begin
@@ -94,9 +93,7 @@ document.addEventListener('DOMContentLoaded', _ => {
                         if (cardCount === match) { //Condition for All cards matched/Game completed
                             setTimeout(_ => { //Delay to allow the last Card to show
                                 alert(`Game Complete
-                               Click 'ok' to Play again`);
-                                openedCards = []; //Clear Arrays for next Game
-                                cardPair = [];
+Play again?`);
                                 play(); //Populate new Game after pressing Okay on alert message
                                 scoreReset(); //Reset the Star Rating
                             }, 500); //dELAY Value of 1/2 a second
@@ -139,10 +136,13 @@ document.addEventListener('DOMContentLoaded', _ => {
     //function that resets the Rating stars on new Game Play
 
     let scoreReset = _ => {
-        stars[1].classList.add('fa-star');
+        stars[1].classList.add('fa-star'); //resets the stars
         stars[1].classList.remove('fa-star-o');
         stars[2].classList.add('fa-star');
         stars[2].classList.remove('fa-star-o');
+
+        openedCards = []; //empty temp Arrays on reset
+        cardPair = [];
     }
 
 
