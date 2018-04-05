@@ -66,8 +66,9 @@ document.addEventListener('DOMContentLoaded', _ => {
     //The Listening Function that determines what happens to the Cards
     //During the Game and what happens on Clicks
 
-    let clicksListener = e => {
-        if (e.target.classList.contains('card') && !e.target.classList.contains('show', 'open')) {
+    let clicksListener = e => { //  prevented bug where Open Cards were being clicked and flipping(VVV /*open show*/)
+        if (e.target.classList.contains('card') && !e.target.classList.contains('match' /*'show', 'open'*/ ) &&
+            !e.target.classList.contains('show', 'open')) {
             e.target.classList.add('show', 'open'); //If card not open, add class to reveal it
             movesCount++; //Count each move/click, wrong or right.
             moves.innerHTML = movesCount;
@@ -81,24 +82,26 @@ document.addEventListener('DOMContentLoaded', _ => {
                 deck.removeEventListener('click', clicksListener); //Disable clicking during comparison
 
                 if (openedCards[0] === openedCards[1]) { //Condition for matching icons
-                    match++; //Match increament to keep track of game progress
-                    openedCards = []; //Clear the Temporary Array to allow more matches
-                    cardPair.forEach(c => { //Going through the cards to add classes to keep them open
-                        c.classList.add('match');
-                        c.classList.remove('open', 'show');
-                    });
-                    cardPair = []; //Clear the temporary Cards Array to allow game to continue
+                    setTimeout(_ => {
+                        match++; //Match increament to keep track of game progress
+                        openedCards = []; //Clear the Temporary Array to allow more matches
+                        cardPair.forEach(c => { //Going through the cards to add classes to keep them open
+                            c.classList.add('match');
+                            c.classList.remove('open', 'show');
+                        });
+                        cardPair = []; //Clear the temporary Cards Array to allow game to continue
 
-                    if (cardCount === match) { //Condition for All cards matched/Game completed
-                        setTimeout(_ => { //Delay to allow the last Card to show
-                            alert(`Game Complete
+                        if (cardCount === match) { //Condition for All cards matched/Game completed
+                            setTimeout(_ => { //Delay to allow the last Card to show
+                                alert(`Game Complete
                                Click 'ok' to Play again`);
-                            openedCards = []; //Clear Arrays for next Game
-                            cardPair = [];
-                            play(); //Populate new Game after pressing Okay on alert message
-                            scoreReset(); //Reset the Star Rating
-                        }, 500); //dELAY Value of 1/2 a second
-                    }
+                                openedCards = []; //Clear Arrays for next Game
+                                cardPair = [];
+                                play(); //Populate new Game after pressing Okay on alert message
+                                scoreReset(); //Reset the Star Rating
+                            }, 500); //dELAY Value of 1/2 a second
+                        }
+                    }, 300);
                 } else { //Conditon if Cards do not match
                     setTimeout(_ => {
                         cardPair.forEach(c => {
