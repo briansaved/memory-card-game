@@ -120,6 +120,8 @@ h1 {
 }
 
 .deck .card.match {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
     cursor: default;
     background: #02ccba;
     font-size: 33px;
