@@ -1,20 +1,28 @@
 # Memory Game Project
 
-## Table of Contents
-
-* [Instructions](#instructions)
-* [Contributing](#contributing)
-
 ## Instructions
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+This is a memory game. Clicking the tiles will reveal icons. If two icons (which are open) match, then these cards will remain open. If they do not match, the tiles will be reversed again.
 
-To get started, open `js/app.js` and start building out the app's functionality
+There is a stars rating present which is provided during the game. This is dependant on the number of moves to complete the game. The rating is as such:
+* **1-24 moves:** 3 stars.
+* **25-32 moves:** 2 stars.
+* **33+ moves:** 1 star.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+All stars should be matched to Complete the Game.
+The Game can also be reset during Play by clicking on the Reset Button
 
-## Contributing
+## External libraries
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+This game utilises the following external libraries within the code.
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+* [Google Fonts](https://fonts.google.com)
+* [Font Awesome](https://fontawesome.com/)
+
+## Other Resources
+
+The Game uses the Fisher-Yates shuffle method from
+
+* [Stackoverflow](https://stackoverflow.com/a/2450976)
+
+Coded in pure JS by [Brian](https://twitter.com/NewBrianTC) 2018 uDACITY & GOOGLE Scholarship Programme

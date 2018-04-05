@@ -25,6 +25,8 @@ body {
 }
 
 .container {
+    width: 100%;
+    height: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -38,11 +40,13 @@ body {
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+    margin: 0 auto;
 }
 
 h1 {
     font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
+    font-weight: 200;
+    font-size: 1.5rem;
 }
 
 /*
@@ -50,10 +54,9 @@ h1 {
  */
 
 .deck {
-    width: 660px;
-    min-height: 680px;
+    width: 95%;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    padding: 32px;
+    padding: 10px;
     border-radius: 10px;
     -webkit-box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
@@ -68,12 +71,17 @@ h1 {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    margin: 0 0 3em;
+    margin: 0 0 1.5em;
+    -webkit-perspective: 500px;
+    perspective: 500px;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 70%;
+    flex: 1 1 70%;
 }
 
 .deck .card {
-    height: 125px;
-    width: 125px;
+    height: 22%;
+    width: 22%;
     background: #2e3d49;
     font-size: 0;
     color: #ffffff;
@@ -90,13 +98,21 @@ h1 {
     align-items: center;
     -webkit-box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 22%;
+    flex: 1 1 22%;
+    margin: 2px;
 }
 
 .deck .card.open {
-    -webkit-transform: rotateY(0);
-    transform: rotateY(0);
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
     background: #02b3e4;
     cursor: default;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
 }
 
 .deck .card.show {
@@ -107,6 +123,8 @@ h1 {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+    -webkit-animation: wobbles 0.4s;
+    animation: wobbles 0.4s;
 }
 
 /*
@@ -115,8 +133,11 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
+    width: 80%;
     margin-bottom: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
 }
 
 .score-panel .stars {
@@ -131,6 +152,108 @@ h1 {
 }
 
 .score-panel .restart {
-    float: right;
     cursor: pointer;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 30%;
+    flex: 1 1 30%;
+    text-align: center;
 }
+
+/* Matching Animation */
+
+@-webkit-keyframes wobbles {
+    10%,
+    90% {
+        -webkit-transform: translate3d(-1px, 0, 0);
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+        -webkit-transform: translate3d(2px, 0, 0);
+        transform: translate3d(2px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+        -webkit-transform: translate3d(-4px, 0, 0);
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%,
+    60% {
+        -webkit-transform: translate3d(4px, 0, 0);
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+@keyframes wobbles {
+    10%,
+    90% {
+        -webkit-transform: translate3d(-1px, 0, 0);
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+        -webkit-transform: translate3d(2px, 0, 0);
+        transform: translate3d(2px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+        -webkit-transform: translate3d(-4px, 0, 0);
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%,
+    60% {
+        -webkit-transform: translate3d(4px, 0, 0);
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+/* Designed for Mobile First and Media Queries for bigger Screens*/
+
+/* Targets Tablets to Netbooks*/
+
+@media screen and (min-width:650px) {
+    .container {
+        width: 90%;
+    }
+    .deck {
+        width: 90%;
+        padding: 20px;
+        margin: 0 0 2em;
+    }
+    .deck .card {
+        margin: 5px;
+    }
+    h1 {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 300;
+        font-size: 2rem;
+    }
+    .score-panel {
+        text-align: left;
+        width: 50%;
+        margin-bottom: 10px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+}
+
+/* targets Laptops and high res-Tablets */
+
+@media screen and (min-width: 950px) {
+    .container {
+        width: 70%;
+    }
+    .deck {
+        width: 70%;
+        padding: 32px;
+        margin: 0 0 3em;
+    }
+    .deck .card {
+        margin: 5px;
+    }
+}
+
+/* Most Challenging Porject to date, but with most to learn*/
