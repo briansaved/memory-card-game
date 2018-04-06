@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', _ => {
             e.target.classList.add('show', 'open'); //If card not open, add class to reveal it
 
             movesCount++; //Count each move/click, wrong or right.
-            moves.innerHTML = movesCount;
+            moves.innerHTML = Math.floor(movesCount / 2); //each card pair = a move.prevent 1.5 by using math.floor
             myTime(); //Starts the timer
             score(movesCount); //Call the score function to listen for rating
 
@@ -104,7 +104,8 @@ document.addEventListener('DOMContentLoaded', _ => {
 
                         if (cardCount === match) { //Condition for All cards matched/Game completed
                             setTimeout(_ => { //Delay to allow the last Card to show
-                                alert(`Game Completed in ${movesCount} moves after ${minutes}:${seconds} secs
+                                alert(`Game Completed in ${(movesCount / 2)} moves after ${minutes}:${seconds} secs
+with a star rating of ${(rating.length)} star(s)!
 Play again?`);
                                 play(); //Populate new Game after pressing Okay on alert message
                                 scoreReset(); //Reset the Star Rating
@@ -132,14 +133,14 @@ Play again?`);
 
 
     //Star Rating Function that removes stars. Receives 1 argument(movesCount)
-
+    // Remember, 'times' is the number of click, so / 2 to get move pairs.
     let score = times => {
-        if (times === 25) { //After 24 Moves The rating reduces by 1 Star
+        if (times === 41) { //After 20 Moves The rating reduces by 1 Star
             stars[2].classList.remove('fa-star');
             stars[2].classList.add('fa-star-o');
         }
 
-        if (times === 33) { //After 32 Moves The Rating reduces by a further star
+        if (times === 61) { //After 30 Moves The Rating reduces by a further star
             stars[1].classList.remove('fa-star');
             stars[1].classList.add('fa-star-o');
         }

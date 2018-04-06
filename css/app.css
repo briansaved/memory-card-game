@@ -146,6 +146,7 @@ h1 {
     padding: 0;
     display: inline-block;
     margin: 0 5px 0 0;
+    width: 20%;
 }
 
 .score-panel .stars li {
@@ -164,6 +165,7 @@ h1 {
 .score-panel .timer {
     margin-left: 20px;
     margin-right: 20px;
+    width: 20%;
 }
 
 /* Matching Animation */
