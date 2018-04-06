@@ -15,6 +15,12 @@ document.addEventListener('DOMContentLoaded', _ => {
     let match = 0;
     let movesCount = 0;
     let cardPair = [];
+    let seconds = 0;
+    let minutes = 0;
+    let timer = document.querySelector('.timer');
+    let currentTime;
+    let timerStarted = false;
+
 
 
     // Shuffle function from http://stackoverflow.com/a/2450976
@@ -55,7 +61,9 @@ document.addEventListener('DOMContentLoaded', _ => {
             deck.appendChild(cardContainer);
 
         }
+        timer.innerHTML = `0:00 s`
     }
+
 
     //Calling the Function to Play the Game
 
@@ -69,11 +77,15 @@ document.addEventListener('DOMContentLoaded', _ => {
         if (e.target.classList.contains('card') && !e.target.classList.contains('match') &&
             !e.target.classList.contains('show', 'open')) { //prevent double clicking or changing open & matched card
             e.target.classList.add('show', 'open'); //If card not open, add class to reveal it
+
             movesCount++; //Count each move/click, wrong or right.
             moves.innerHTML = movesCount;
+            myTime(); //Starts the timer
             score(movesCount); //Call the score function to listen for rating
+
             let currentCard = e.target; //The card is what is clicked
             let icons = currentCard.firstElementChild.classList[1]; //The icon is inside card
+
             openedCards.push(icons); //Temporary Array for storing 2 icons to compare
             cardPair.push(currentCard); //Temporary Array for storing 2 cards to compare
 
@@ -92,10 +104,11 @@ document.addEventListener('DOMContentLoaded', _ => {
 
                         if (cardCount === match) { //Condition for All cards matched/Game completed
                             setTimeout(_ => { //Delay to allow the last Card to show
-                                alert(`Game Complete
+                                alert(`Game Completed in ${movesCount} moves after ${minutes}:${seconds} secs
 Play again?`);
                                 play(); //Populate new Game after pressing Okay on alert message
                                 scoreReset(); //Reset the Star Rating
+                                stopTime(); // Stop timer
                             }, 500); //dELAY Value of 1/2 a second
                         }
                     }, 300);
@@ -143,6 +156,46 @@ Play again?`);
 
         openedCards = []; //empty temp Arrays on reset
         cardPair = [];
+        stopTime(); //stop the timer
+    }
+
+
+    //Function That displays Time
+
+    let time = _ => {
+        seconds++;
+        if (seconds < 10) {
+            timer.innerHTML = `${minutes}:0${seconds} s`;
+
+        } else if (seconds === 60) {
+            seconds = 0;
+            minutes++;
+            timer.innerHTML = `${minutes}:00 s`;
+
+        } else {
+            timer.innerHTML = `${minutes}:${seconds} s`;
+        }
+    }
+
+
+    //Function That stops the timer
+
+    let stopTime = _ => {
+        clearInterval(currentTime); //Variable for setInterval
+        minutes = 0; //Resets the time values
+        seconds = 0;
+        timer.innerHTML = `0:00 s`; //To avoid displaying old time
+        timerStarted = false; // prepare for new timer
+
+    }
+
+
+    //Time Funtion definition
+    let myTime = _ => {
+        if (timerStarted) return; //Checks if timer is running, if running wont start a new timer id
+
+        currentTime = setInterval(time, 1000); //if no timer is running, will start the timer
+        timerStarted = true; //sets true to stop multiple timers from running
     }
 
 
@@ -156,6 +209,7 @@ Play again?`);
     document.querySelector('.restart').addEventListener('click', _ => {
         play();
         scoreReset();
+        stopTime();
     });
 
 }); //Close Document.Ready

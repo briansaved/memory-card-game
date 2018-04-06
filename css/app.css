@@ -161,6 +161,11 @@ h1 {
     text-align: center;
 }
 
+.score-panel .timer {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
 /* Matching Animation */
 
 @-webkit-keyframes wobbles {
