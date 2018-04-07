@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', _ => {
 
 
     //Initial Declarations of the deck, the Cards and other variables
-
     const deck = document.querySelector('.deck');
     let card = document.getElementsByClassName('card');
     let cards = ['anchor', 'anchor', 'bicycle', 'bicycle', 'bolt', 'bolt', 'bomb', 'bomb', 'cube', 'cube', 'diamond', 'diamond', 'leaf', 'leaf', 'paper-plane-o', 'paper-plane-o'];
@@ -20,11 +19,14 @@ document.addEventListener('DOMContentLoaded', _ => {
     let timer = document.querySelector('.timer');
     let currentTime;
     let timerStarted = false;
+    let modal = document.querySelector('.modal');
+    let message = document.querySelector('.modal-text');
+    let button = document.getElementById('ok');
+    let close = document.querySelector('.x');
 
 
 
     // Shuffle function from http://stackoverflow.com/a/2450976
-
     function shuffle(array) {
         var currentIndex = array.length,
             temporaryValue, randomIndex;
@@ -42,7 +44,6 @@ document.addEventListener('DOMContentLoaded', _ => {
 
 
     //The function that will create the game to play
-
     let play = _ => {
 
         let newPlay = shuffle(cards);
@@ -66,13 +67,11 @@ document.addEventListener('DOMContentLoaded', _ => {
 
 
     //Calling the Function to Play the Game
-
     play();
 
 
     //The Listening Function that determines what happens to the Cards
     //During the Game and what happens on Clicks
-
     let clicksListener = e => { //  prevented bug where Open Cards were being clicked and flipping(VVV /*open show*/)
         if (e.target.classList.contains('card') && !e.target.classList.contains('match') &&
             !e.target.classList.contains('show', 'open')) { //prevent double clicking or changing open & matched card
@@ -104,10 +103,11 @@ document.addEventListener('DOMContentLoaded', _ => {
 
                         if (cardCount === match) { //Condition for All cards matched/Game completed
                             setTimeout(_ => { //Delay to allow the last Card to show
-                                alert(`Game Completed in ${(movesCount / 2)} moves after ${minutes}:${seconds} secs
-with a star rating of ${(rating.length)} star(s)!
+                                message.innerHTML = (`Game Completed in ${(movesCount / 2)} moves after ${minutes}min : ${((seconds < 10) ? "0"+seconds : seconds )}secs
+with a star rating of ${rating.length} ${((rating.length===1) ? "star." : "stars. ")}
 Play again?`);
-                                play(); //Populate new Game after pressing Okay on alert message
+                                modal.classList.add('modal-show');
+                                play(); //Populate new Game after pressing Okay on Modal
                                 scoreReset(); //Reset the Star Rating
                                 stopTime(); // Stop timer
                             }, 500); //dELAY Value of 1/2 a second
@@ -148,7 +148,6 @@ Play again?`);
 
 
     //function that resets the Rating stars on new Game Play
-
     let scoreReset = _ => {
         stars[1].classList.add('fa-star'); //resets the stars
         stars[1].classList.remove('fa-star-o');
@@ -162,7 +161,6 @@ Play again?`);
 
 
     //Function That displays Time
-
     let time = _ => {
         seconds++;
         if (seconds < 10) {
@@ -180,7 +178,6 @@ Play again?`);
 
 
     //Function That stops the timer
-
     let stopTime = _ => {
         clearInterval(currentTime); //Variable for setInterval
         minutes = 0; //Resets the time values
@@ -201,17 +198,21 @@ Play again?`);
 
 
     //Adding the event Listener to the Deck Itself
-
     deck.addEventListener('click', clicksListener);
 
 
     //Adding an Event listener to the restart button to be able to restart the Game
-
     document.querySelector('.restart').addEventListener('click', _ => {
         play();
         scoreReset();
         stopTime();
     });
+
+
+    //Close Modal on Clicking x or button or outside messagebox
+    window.onclick = e => {
+        ((e.target === modal) || (e.target === close) || (e.target === button)) ? modal.classList.remove('modal-show'): undefined;
+    }
 
 }); //Close Document.Ready
 
