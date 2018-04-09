@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', _ => {
     let close = document.querySelector('.x');
 
 
-
     // Shuffle function from http://stackoverflow.com/a/2450976
     function shuffle(array) {
         var currentIndex = array.length,
@@ -47,11 +46,11 @@ document.addEventListener('DOMContentLoaded', _ => {
     let play = _ => {
 
         let newPlay = shuffle(cards);
-        deck.innerHTML = '';
+        let fragment = document.createDocumentFragment(); //lightweight DOM
+        deck.innerHTML = ''; //Keep deck empty for new game
         match = 0;
         movesCount = 0;
         moves.textContent = '0';
-
 
         for (let i = 0; i < newPlay.length; i++) {
             let cardContainer = document.createElement('li');
@@ -59,9 +58,10 @@ document.addEventListener('DOMContentLoaded', _ => {
             let icon = document.createElement('i');
             icon.classList.add('fa', 'fa-' + newPlay[i]);
             cardContainer.appendChild(icon);
-            deck.appendChild(cardContainer);
+            fragment.appendChild(cardContainer); //avoid reflows and repaints
 
         }
+        deck.appendChild(fragment); //Reflow and repaint only happens once
         timer.innerHTML = `0:00 s`
     }
 
@@ -72,18 +72,18 @@ document.addEventListener('DOMContentLoaded', _ => {
 
     //The Listening Function that determines what happens to the Cards
     //During the Game and what happens on Clicks
-    let clicksListener = e => { //  prevented bug where Open Cards were being clicked and flipping(VVV /*open show*/)
+    let clicksListener = e => { //  prevented bug where Open Cards were being clicked and flipping
         if (e.target.classList.contains('card') && !e.target.classList.contains('match') &&
             !e.target.classList.contains('show', 'open')) { //prevent double clicking or changing open & matched card
-            e.target.classList.add('show', 'open'); //If card not open, add class to reveal it
+            e.target.classList.add('show', 'open');
 
             movesCount++; //Count each move/click, wrong or right.
             moves.innerHTML = Math.floor(movesCount / 2); //each card pair = a move.prevent 1.5 by using math.floor
             myTime(); //Starts the timer
-            score(movesCount); //Call the score function to listen for rating
+            score(movesCount); //Call the score function for live rating
 
-            let currentCard = e.target; //The card is what is clicked
-            let icons = currentCard.firstElementChild.classList[1]; //The icon is inside card
+            let currentCard = e.target;
+            let icons = currentCard.firstElementChild.classList[1];
 
             openedCards.push(icons); //Temporary Array for storing 2 icons to compare
             cardPair.push(currentCard); //Temporary Array for storing 2 cards to compare
@@ -103,14 +103,14 @@ document.addEventListener('DOMContentLoaded', _ => {
 
                         if (cardCount === match) { //Condition for All cards matched/Game completed
                             setTimeout(_ => { //Delay to allow the last Card to show
-                                message.innerHTML = (`Game Completed in ${(movesCount / 2)} moves after ${minutes}min : ${((seconds < 10) ? "0"+seconds : seconds )}secs
-with a star rating of ${rating.length} ${((rating.length===1) ? "star." : "stars. ")}
+                                message.innerHTML = (`Game Completed in ${(movesCount / 2)} moves after ${minutes}min : ${((seconds < 10) ? "0"+seconds : seconds )}sec
+with a star rating of ${rating.length} ${((rating.length===1) ? "star. " : "stars. ")}
 Play again?`);
                                 modal.classList.add('modal-show');
                                 play(); //Populate new Game after pressing Okay on Modal
                                 scoreReset(); //Reset the Star Rating
                                 stopTime(); // Stop timer
-                            }, 500); //dELAY Value of 1/2 a second
+                            }, 500);
                         }
                     }, 300);
                 } else { //Conditon if Cards do not match
@@ -122,7 +122,7 @@ Play again?`);
                         cardPair = [];
                     }, 500); //Delay Value for Cards to close
                 }
-                setTimeout(_ => { //Restore Event Listener that was removed During Verification
+                setTimeout(_ => { //Restore Event Listener removed During Verification
                     deck.addEventListener('click', clicksListener);
                 }, 600);
             }
@@ -190,9 +190,9 @@ Play again?`);
 
     //Time Funtion definition
     let myTime = _ => {
-        if (timerStarted) return; //Checks if timer is running, if running wont start a new timer id
+        if (timerStarted) return; //Checks if timer is running,wont start a new timer id
 
-        currentTime = setInterval(time, 1000); //if no timer is running, will start the timer
+        currentTime = setInterval(time, 1000); //if no timer is running,start the timer
         timerStarted = true; //sets true to stop multiple timers from running
     }
 
